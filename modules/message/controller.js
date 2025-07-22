@@ -23,4 +23,13 @@ export const createNewMessage = async (req, res, next) => {
 	}
 };
 
-
+export const getMessagesByRoomId = async (req, res, next) => {
+	try {
+		const { roomId } = req.params;
+		await verifyRoomAccess(roomId, req.user.id);
+		const messages = await messageModel.getMessagesByRoomId(roomId);
+		res.status(200).json(messages);
+	} catch (error) {
+		next(error);
+	}
+};
